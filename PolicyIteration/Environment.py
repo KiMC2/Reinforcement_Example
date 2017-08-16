@@ -1,16 +1,25 @@
-import pygame as pg
-
 class Environment():
     def __init__(self):
-        # 그리드 크기 및 크기당 픽셀 수
+        # 그리드 크기
         self.grid_size  = 5
-        self.grid_pixel = 100
+
+        # 유닛 초기 지점 좌표
+        self.unit_coord = (0, 0)
 
         # 목표지점 좌표
         self.goal_coord = (2, 2)
 
+        # 장애물 좌표
+        self.obstacle_coord = [[1, 2], [2, 1]]
+
         # 보상 테이블
-        self.reward_table = [ [0.0] * self.grid_size for _ in range(self.grid_size) ]
+        self.reward_table = [ [0] * self.grid_size for _ in range(self.grid_size) ]
+        self.reward_table[self.goal_coord[0]][self.goal_coord[1]] = 1
+
+        for o_coord in self.obstacle_coord:
+            x, y = o_coord
+            self.reward_table[y][x] = -1
+
 
         # 가능한 행동 모음( 상 하 좌 우 )
         self.possible_actions = [0, 1, 2, 3]
@@ -35,13 +44,10 @@ class Environment():
         next_state = x, y
         return next_state
 
-    def get_reward(self, state, action):
-        next_state = self.step(state, action)
-        x, y = next_state
+    def get_reward(self, state):
+        x, y = state
         return self.reward_table[y][x]
 
-if __name__ == '__main__':
-    env = Environment()
 
 
 

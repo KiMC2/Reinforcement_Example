@@ -1,5 +1,3 @@
-from Environment import Environment
-
 class Agent():
     def __init__(self, env):
         # 환경
@@ -9,7 +7,7 @@ class Agent():
         self.value_func = [[0.0] * env.grid_size for _ in range(env.grid_size)]
 
         # 정책 테이블
-        self.policy = [[0.0, 0.0, 0.0, 0.0] * env.grid_size for _ in range(env.grid_size)]
+        self.policy = [[[0.25, 0.25, 0.25, 0.25]] * env.grid_size for _ in range(env.grid_size)]
 
         # 감가율
         self.discount_factor = 0.9
@@ -23,6 +21,7 @@ class Agent():
         return self.value_func[y][x]
 
     def policy_evaluation(self):
+        next_value_func = self.value_func
 
         for y in range(self.env.grid_size):
             for x in range(self.env.grid_size):
@@ -54,8 +53,13 @@ class Agent():
                         value     += self._get_policy(state, action) * \
                                      (reward + self.discount_factor * next_value)
 
+                    if x == 2 and y == 3:
+                        print("value = ", value)
+                        
+
                 # 업데이트
-                self.value[y][x] = round(value, 2)
+                next_value_func[y][x] = round(value, 2)
+        self.value_func = next_value_func
 
     def policy_improvement(self):
         # 갱신할 policy
@@ -99,10 +103,8 @@ class Agent():
 
                     self.policy[y][x] = policy
 
+    def move(self):
+        pass
 
-
-
-if __name__ == '__main__':
-    env = Environment()
-    agent = Agent(env)
-    agent.policy_evaluation()
+    def reset(self):
+        pass
