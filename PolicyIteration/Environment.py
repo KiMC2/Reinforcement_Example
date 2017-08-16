@@ -2,39 +2,46 @@ import pygame as pg
 
 class Environment():
     def __init__(self):
-        self.grid_x     = 5
-        self.grid_y     = 5
+        # 그리드 크기 및 크기당 픽셀 수
+        self.grid_size  = 5
         self.grid_pixel = 100
 
-        self.goal_x     = 2
-        self.goal_y     = 2
+        # 목표지점 좌표
+        self.goal_coord = (2, 2)
 
+        # 보상 테이블
+        self.reward_table = [ [0.0] * self.grid_size for _ in range(self.grid_size) ]
 
-        self.reward = [ [0.0] * self.grid_x for _ in range(self.grid_y) ]
+        # 가능한 행동 모음( 상 하 좌 우 )
+        self.possible_actions = [0, 1, 2, 3]
 
-        self.possible_action = ['UP', 'DOWN', 'LEFT', 'RIGHT']
-
+        # 상태 전이 확률률
         self.transition_probability = 1
 
     def _boundary_check(self, x, y):
-        return (x == 0 or x == self.grid_x - 1 or \
-                y == 0 or y == self.grid_y - 1)
+        return (x == 0 or x == self.grid_size - 1 or \
+                y == 0 or y == self.grid_size - 1)
 
     def step(self, state, action):
         x, y = state
 
+        # 경계선인지 확인하고 움직이기
         if not self._boundary_check(x, y):
-            if action == 'UP':      y -= 1
-            elif action == 'DOWN':  y += 1
-            elif action == 'LEFT':  x -= 1
-            elif action == 'RIGHT': x += 1
+            if action == 0:   y -= 1    # 상
+            elif action == 1: y += 1    # 하
+            elif action == 2: x -= 1    # 좌
+            elif action == 3: x += 1    # 우
 
-        return x, y
+        next_state = x, y
+        return next_state
 
     def get_reward(self, state, action):
-        x, y = self.step(state, action)
-        return self.reward[x][y]
+        next_state = self.step(state, action)
+        x, y = next_state
+        return self.reward_table[y][x]
 
 if __name__ == '__main__':
     env = Environment()
+
+
 
