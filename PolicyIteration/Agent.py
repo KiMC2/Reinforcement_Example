@@ -64,7 +64,7 @@ class Agent():
                             max_index.append(index)
 
                     # 행동 확률
-                    
+
 
         self.policy = next_policy
 
