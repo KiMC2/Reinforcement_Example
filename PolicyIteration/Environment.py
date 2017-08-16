@@ -27,19 +27,32 @@ class Environment():
         # 상태 전이 확률률
         self.transition_probability = 1
 
-    def _boundary_check(self, x, y):
-        return (x == 0 or x == self.grid_size - 1 or \
-                y == 0 or y == self.grid_size - 1)
-
     def step(self, state, action):
         x, y = state
 
-        # 경계선인지 확인하고 움직이기
-        if not self._boundary_check(x, y):
-            if action == 0:   y -= 1    # 상
-            elif action == 1: y += 1    # 하
-            elif action == 2: x -= 1    # 좌
-            elif action == 3: x += 1    # 우
+        # 상
+        if action == 0:
+            y -= 1
+            if y < 0:
+                y += 1
+
+        # 하
+        elif action == 1:
+            y += 1
+            if y == self.grid_size:
+                y -= 1
+
+        # 좌
+        elif action == 2:
+            x -= 1
+            if x < 0:
+                x += 1
+
+        # 우
+        elif action == 3:
+            x += 1
+            if x == self.grid_size:
+                x -= 1
 
         next_state = x, y
         return next_state

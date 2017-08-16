@@ -82,13 +82,12 @@ class GraphicUtility():
         self.screen.blit(image, (x, y))
 
     def _draw_text(self, text, x, y):
-        font_size = int(self.grid_pixel * 0.1)
-        font = pg.font.SysFont('Comic Sans MS', font_size)
+        font_size = int(self.grid_pixel * 0.11)
+        font = pg.font.SysFont('Helvetica', font_size)
         text = font.render(text, False, (0,0,0))
 
-        font_pos = int(self.grid_pixel * 0.8)
-        draw_x = x * self.grid_pixel + font_pos
-        draw_y = y * self.grid_pixel + font_pos
+        draw_x = x * self.grid_pixel + int(self.grid_pixel * 0.7)
+        draw_y = y * self.grid_pixel + int(self.grid_pixel * 0.8)
 
         self.screen.blit(text, (draw_x, draw_y))
 

@@ -21,7 +21,7 @@ class Agent():
         return self.value_func[y][x]
 
     def policy_evaluation(self):
-        next_value_func = self.value_func
+        next_value_func = [[0.0] * self.env.grid_size for _ in range(self.env.grid_size)]
 
         for y in range(self.env.grid_size):
             for x in range(self.env.grid_size):
@@ -53,9 +53,6 @@ class Agent():
                         value     += self._get_policy(state, action) * \
                                      (reward + self.discount_factor * next_value)
 
-                    if x == 2 and y == 3:
-                        print("value = ", value)
-                        
 
                 # 업데이트
                 next_value_func[y][x] = round(value, 2)
