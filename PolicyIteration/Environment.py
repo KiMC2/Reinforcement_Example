@@ -1,16 +1,21 @@
 class Environment():
-    def __init__(self):
+    def __init__(self, grid_size = 5, unit_coord=(0,0), goal_coord=(2,2), obstacle_coord= [[1, 2], [2, 1]]):
         # 그리드 크기
-        self.grid_size  = 5
+        self.grid_size  = grid_size
 
         # 유닛 초기 지점 좌표
-        self.unit_coord = (0, 0)
+        self.unit_coord = unit_coord
 
         # 목표지점 좌표
-        self.goal_coord = (2, 2)
+        self.goal_coord = goal_coord
 
         # 장애물 좌표
-        self.obstacle_coord = [[1, 2], [2, 1]]
+        self.obstacle_coord = obstacle_coord
+
+        # 초기화하기 위해 처음 정보 저장
+        self.start_unit_coord = unit_coord
+        self.start_goal_coord = goal_coord
+        self.start_obstacle_coord = obstacle_coord
 
         # 보상 테이블
         self.reward_table = [ [0] * self.grid_size for _ in range(self.grid_size) ]
@@ -60,6 +65,25 @@ class Environment():
     def get_reward(self, state):
         x, y = state
         return self.reward_table[y][x]
+
+    def reset(self):
+        # 유닛 초기 지점 좌표
+        self.unit_coord = self.start_unit_coord
+
+        # 목표지점 좌표
+        self.goal_coord = self.start_goal_coord
+
+        # 장애물 좌표
+        self.obstacle_coord = self.start_obstacle_coord
+
+        # 보상 테이블
+        self.reward_table = [[0] * self.grid_size for _ in range(self.grid_size)]
+        self.reward_table[self.goal_coord[0]][self.goal_coord[1]] = 1
+
+        for o_coord in self.obstacle_coord:
+            x, y = o_coord
+            self.reward_table[y][x] = -1
+
 
 
 

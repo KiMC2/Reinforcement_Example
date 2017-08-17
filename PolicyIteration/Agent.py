@@ -1,3 +1,6 @@
+import random as pr
+import numpy as np
+
 class Agent():
     def __init__(self, env):
         # 환경
@@ -11,6 +14,9 @@ class Agent():
 
         # 감가율
         self.discount_factor = 0.9
+
+        # 움직임 스위치
+        self.doMove = False
 
     def _get_policy(self, state, action):
         x, y = state
@@ -96,12 +102,33 @@ class Agent():
                     # 정책 저장
                     policy = [0.0, 0.0, 0.0, 0.0]
                     for action in max_actions:
-                        policy[action] = 1 / len(max_actions)
+                        policy[action] = round(1 / len(max_actions), 2)
 
                     self.policy[y][x] = policy
 
     def move(self):
-        pass
+        x, y = self.env.unit_coord
+
+        # 움직이기 시작골인 지점이면 가만히
+        if not self.env.unit_coord == self.env.goal_coord:
+            policy = self.policy[y][x]
+
+            max = np.amax(policy)                  # max value of policy list
+            indices = np.nonzero(policy == max)[0] # array([max_index_list], dtype=int64)
+
+            action = pr.choice(indices)
+
+            self.env.unit_coord = self.env.step(self.env.unit_coord, action)
+
 
     def reset(self):
-        pass
+        # 가치함수 테이블
+        self.value_func = [[0.0] * self.env.grid_size for _ in range(self.env.grid_size)]
+
+        # 정책 테이블
+        self.policy = [[[0.25, 0.25, 0.25, 0.25]] * self.env.grid_size for _ in range(self.env.grid_size)]
+
+        # 움직임 스위치
+        self.doMove = False
+
+        self.env.reset()
