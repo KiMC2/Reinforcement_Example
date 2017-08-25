@@ -11,6 +11,7 @@ class Environment():
                       'obstacle': obstacle_coord}
 
         self.unit_start_point = unit_coord
+        self.obstacle_start_point = obstacle_coord
 
         self.obstacle_dir = []
         for _ in range(len(self.coord['obstacle'])):
@@ -35,7 +36,7 @@ class Environment():
                 reward = -1
 
         if unit_coord == self.coord['goal']:
-            reward = 50
+            reward = 3
             done = True
 
         return reward, done
@@ -95,7 +96,8 @@ class Environment():
     def reset(self):
 
         self.coord['unit'] = self.unit_start_point
-
+        self.coord['obstacle'] =self.obstacle_start_point
         state = self._coord_to_state()
+
 
         return state

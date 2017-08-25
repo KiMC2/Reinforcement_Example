@@ -7,8 +7,8 @@ import random
 flags = tf.app.flags
 
 flags.n_input = 15
-flags.n_hidden1 = 50
-flags.n_hidden2 = 50
+flags.n_hidden1 = 30
+flags.n_hidden2 = 30
 flags.n_output = 4
 
 flags.learning_rate = 0.001

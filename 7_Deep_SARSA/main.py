@@ -47,7 +47,7 @@ if __name__ == "__main__":
         if graphic_on:
             clock.tick(FPS)
             graphic.render(env)
-            clock.tick(FPS // 3)
+            clock.tick(FPS // 2)
 
 
 
